@@ -1,0 +1,105 @@
+html {
+  @import url(../templates/bucket.css);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+a {
+  color: rgb(30, 30, 63);
+  text-decoration-style: wavy;
+}
+
+.outercircle {
+  position: absolute;
+  left: 40%;
+  top: 25%;
+  border: 8px solid #00ff82;
+
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  z-index: 86;
+}
+
+.datadisplay-outer {
+  position: fixed;
+  padding: 5%;
+  border-radius: 10px;
+  background-color: rgb(75, 132, 200, 0.5);
+  width: 15%;
+  height: 40%;
+  bottom: 5%;
+  left: 1.5%;
+}
+
+.datadisplay-inner {
+  position: fixed;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: lightgray;
+  padding: 1%;
+  border: 5px black;
+  border-radius: 10px;
+  background-color: rgba(238, 227, 227, 0.5);
+  bottom: 9%;
+  left: 3%;
+  width: 20%;
+  height: 50%;
+}
+
+.datadisplay-inner div {
+  max-height: 50px;
+}
+
+.genres p {
+  display: inline-block;
+  font-size: 20px;
+}
+.artistinfo {
+  display: inline-block;
+  font-size: 16px;
+}
+
+.artistinfo p {
+  font-size: 16px;
+}
+
+.years p {
+  display: inline-block;
+  font-size: 14px;
+}
+
+.birthlocation p {
+  display: inline-block;
+  font-size: 24px;
+}
+
+.links p {
+  display: inline-block;
+  font-size: 10px;
+}
+
+#overlay {
+  position: absolute;
+  right: 0;
+  width: 130px;
+  top: 0px;
+  left: 0px;
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+
+  /* transform: translate(-50%, -50%); */
+  z-index: 96;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg)
+    brightness(118%) contrast(119%);
+}
+
+#bandgroup {
+  font-size: 14px;
+}
+#artistname {
+  font-size: 20px;
+}
