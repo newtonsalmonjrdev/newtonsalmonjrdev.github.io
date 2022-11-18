@@ -32,6 +32,8 @@ document.getElementById("artistname").style.fontSize = "20px";
 //Disabling timeline and animation widgets
 viewer.animation.container.style.visibility = "hidden";
 viewer.timeline.container.style.visibility = "hidden";
+console.log(this);
+
 viewer.forceResize();
 
 //Centering the HTML circle around the point position
@@ -163,7 +165,7 @@ function getGeoJSONProps() {
           //Birth Year
           if (geoJSONDataList.values[i - 1].properties.Birth_Year != "NA") {
             document.getElementById("birthyear").innerHTML =
-              geoJSONDataList.values[i - 1].properties.Birth_Year + " — ";
+              geoJSONDataList.values[i - 1].properties.Birth_Year + "";
           } else {
             document.getElementById("birthyear").innerHTML = "";
           }
@@ -172,7 +174,7 @@ function getGeoJSONProps() {
             document.getElementById("deathyear").innerHTML =
               geoJSONDataList.values[i - 1].properties.Death_Year;
           } else {
-            document.getElementById("deathyear").innerHTML = "";
+            document.getElementById("deathyear").innerHTML = "Present";
           }
 
           // Country of Birth

@@ -1,13 +1,21 @@
 html {
   @import url(../templates/bucket.css);
-  height: 100%;
-  width: 100%;
+  position: relative;
+  top: -15px;
+  height: 102%;
+  width: 102%;
+  left: -15px;
   overflow: hidden;
 }
 
 a {
   color: rgb(30, 30, 63);
   text-decoration-style: wavy;
+}
+
+.cesium-viewer-toolbar {
+  display: none !important;
+  visibility: hide !important;
 }
 
 .outercircle {
