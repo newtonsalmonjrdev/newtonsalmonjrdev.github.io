@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      CodePen - GeoJSONLayer | Sample | ArcGIS API for JavaScript 4.25
+    </title>
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta
+          name="viewport"
+          content="initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <!--
+     ArcGIS API for JavaScript, https://js.arcgis.com
+     For more information about the layers-geojson sample,
+     read the original sample description at developers.arcgis.com.
+     https://developers.arcgis.com/javascript/latest/sample-code/layers-geojson/
+     -->
+        <title>GeoJSONLayer | Sample | ArcGIS API for JavaScript 4.25</title>
+
+        <style>
+          html,
+          body,
+          #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+          }
+        </style>
+
+        <link
+          rel="stylesheet"
+          href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
+        />
+        <script src="https://js.arcgis.com/4.25/"></script>
+
+        <script>
+          require([
+            "esri/Map",
+            "esri/layers/GeoJSONLayer",
+            "esri/views/MapView",
+            "esri/layers/FeatureLayer",
+          ], (Map, GeoJSONLayer, MapView, FeatureLayer) => {
+            // If GeoJSON files are not on the same domain as your website, a CORS enabled server
+            // or a proxy is required.
+
+            const url =
+              "https://raw.githubusercontent.com/newtonsalmonjrdev/BrazilEndemics/main/Species_byBiome_tableTtable43_ExportLayerjson.json";
+
+            // Paste the url into a browser's address bar to download and view the attributes
+            // in the GeoJSON file. These attributes include:
+            // * Species Name - Species_Name
+            // * type - earthquake or other event such as nuclear test
+            // * place - location of the event
+            // * time - the time of the event
+            // Use the Arcade Date() function to format time field into a human-readable format
+
+            const template = {
+              title: "Endemic Species",
+              content: [
+                {
+                  type: "text", // TextContentElement
+                  text: "<br/>  Species Name: {Species_Name} <br/>  Status: {Endangered_Rare}<br/> Source: {Source}",
+                },
+                {
+                  type: "media", // MediaContentElement
+                  mediaInfos: [
+                    {
+                      type: "image",
+                      caption: "",
+                      value: {
+                        sourceURL: "{Githubimg}",
+                      },
+                    },
+                  ],
+                },
+              ],
+            };
+
+            const renderer = {
+              type: "simple",
+              field: "Species_Name",
+              symbol: {
+                type: "simple-marker",
+                color: "rgba(11, 153, 209, 1)",
+                outline: {
+                  color: "white",
+                },
+              },
+              // visualVariables: [
+              //   {
+              //     type: "size",
+              //     field: "Species_Name",
+              //     stops: [
+              //       {
+              //         value: 2.5,
+              //         size: "4px",
+              //       },
+              //       {
+              //         value: 8,
+              //         size: "40px",
+              //       },
+              //     ],
+              //   },
+              // ],
+            };
+            const labelClass = {
+              // autocasts as new LabelClass()
+              symbol: {
+                type: "text", // autocasts as new TextSymbol()
+                color: "rgba(46, 46, 46, 0.7)",
+                font: {
+                  // autocast as new Font()
+                  family: "Ubuntu",
+                  size: 12,
+                  weight: "bold",
+                },
+              },
+              labelPlacement: "always-horizontal",
+              labelExpressionInfo: {
+                expression: "$feature.name",
+              },
+            };
+            const featureLayer = new FeatureLayer({
+              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Brazil_Biomes_FeatureLayer/FeatureServer",
+              labelingInfo: [labelClass],
+            });
+
+            const geojsonLayer = new GeoJSONLayer({
+              url: url,
+              popupTemplate: template,
+              renderer: renderer,
+              orderBy: {
+                field: "Species_Name",
+              },
+            });
+
+            const map = new Map({
+              basemap: "gray-vector",
+              layers: [featureLayer, geojsonLayer],
+            });
+
+            const view = new MapView({
+              container: "viewDiv",
+              center: [-40.67, -9.44],
+              zoom: 2,
+              map: map,
+            });
+          });
+        </script>
+      </head>
+
+      <body>
+        <div id="viewDiv"></div>
+      </body>
+    </html>
+    <!-- partial -->
+  </body>
+</html>
