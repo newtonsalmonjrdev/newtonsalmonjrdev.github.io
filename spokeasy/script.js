@@ -18,6 +18,7 @@ function setup() {
   mic = new p5.AudioIn();
   mic.start(startPitch);
   mic.start();
+  audioContext.resume();
 }
 
 function startPitch() {
