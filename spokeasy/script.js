@@ -2,6 +2,7 @@
 
 let audioContext;
 let mic;
+
 let pitch;
 let pitchArray = [];
 let pitchVar;
@@ -15,9 +16,14 @@ function setup() {
   cnv.position(0, 0);
   textAlign(CENTER, CENTER);
   audioContext = getAudioContext();
+  touchStarted();
   mic = new p5.AudioIn();
   mic.start(startPitch);
   mic.start();
+}
+
+function touchStarted() {
+  getAudioContext().resume();
 }
 
 function startPitch() {
