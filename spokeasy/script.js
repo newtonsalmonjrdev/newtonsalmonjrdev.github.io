@@ -21,6 +21,10 @@ function setup() {
   audioContext.resume();
 }
 
+function touchStarted() {
+  getAudioContext().resume();
+}
+
 function startPitch() {
   pitch = ml5.pitchDetection(model_url, audioContext, mic.stream, modelLoaded);
 }
