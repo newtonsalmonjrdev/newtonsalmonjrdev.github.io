@@ -9,26 +9,6 @@ let volOn = false;
 let model_url =
   "https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models@main/models/pitch-detection/crepe/";
 
-const ctx1 = new (window.AudioContext || window.webkitAudioContext)();
-
-const btn = document.querySelector("#tuneractivate");
-btn.addEventListener("click", () => {
-  ctx1.resume().then(() => console.log(ctx1.state));
-});
-
-// function tunerChromeActive() {
-//   document
-//     .getElementById("tuneractivate")
-//     .addEventListener("click", function () {
-//       console.log("Tuner Activated");
-//       ctx1.resume().then();
-//     });
-// }
-
-// window.onload = function () {
-//   tunerChromeActive();
-// };
-
 function setup() {
   let cnv = createCanvas(300, 300);
   cnv.parent("sketch-holder");
