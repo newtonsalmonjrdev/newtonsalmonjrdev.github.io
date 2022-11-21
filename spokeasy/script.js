@@ -22,10 +22,6 @@ function setup() {
   mic.start();
 }
 
-function touchStarted() {
-  getAudioContext().resume();
-}
-
 function startPitch() {
   pitch = ml5.pitchDetection(model_url, audioContext, mic.stream, modelLoaded);
 }
@@ -311,4 +307,8 @@ function rectangle() {
   stroke(25);
   fill(255, 155, 255, 10);
   rect(0, 0, 298, 298, 10);
+}
+
+function touchStarted() {
+  getAudioContext().resume();
 }
