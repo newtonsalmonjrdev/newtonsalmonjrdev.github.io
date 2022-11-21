@@ -11,18 +11,23 @@ let model_url =
 
 const ctx1 = new (window.AudioContext || window.webkitAudioContext)();
 
-function tunerChromeActive() {
-  document
-    .getElementById("tuneractivate")
-    .addEventListener("click", function () {
-      console.log("Tuner Activated");
-      ctx1.resume().then();
-    });
-}
+const btn = document.querySelector("#tuneractivate");
+btn.addEventListener("click", () => {
+  ctx1.resume().then(() => console.log(ctx1.state));
+});
 
-window.onload = function () {
-  tunerChromeActive();
-};
+// function tunerChromeActive() {
+//   document
+//     .getElementById("tuneractivate")
+//     .addEventListener("click", function () {
+//       console.log("Tuner Activated");
+//       ctx1.resume().then();
+//     });
+// }
+
+// window.onload = function () {
+//   tunerChromeActive();
+// };
 
 function setup() {
   let cnv = createCanvas(300, 300);
@@ -33,11 +38,6 @@ function setup() {
   mic = new p5.AudioIn();
   mic.start(startPitch);
   mic.start();
-  audioContext.resume();
-}
-
-function touchStarted() {
-  getAudioContext().resume();
 }
 
 function startPitch() {
