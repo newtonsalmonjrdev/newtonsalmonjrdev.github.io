@@ -20,6 +20,9 @@ canvas {
   border-radius: 12px;
 }
 
+p {
+  padding-left: 10px;
+}
 .outsidebox {
   position: relative;
   display: none;
@@ -112,6 +115,14 @@ canvas {
   text-align: center;
   font-weight: 550;
   text-decoration-line: underline;
+}
+
+.form-control {
+  background-color: var(--primary-box-color);
+}
+
+.border {
+  background-color: var(--primary-box-color);
 }
 
 .borderc {
