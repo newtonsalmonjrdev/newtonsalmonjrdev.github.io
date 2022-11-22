@@ -168,7 +168,7 @@ function getGeoJSONProps() {
           ) {
             document.getElementById("birthcountry").innerHTML =
               geoJSONDataList.values[i - 1].properties.Country_of_Birth;
-            document.getElementById("birthcountry").style.color = "#23E3E8";
+            document.getElementById("birthcountry").style.color = "yellow";
           } else {
             document.getElementById("birthcountry").innerHTML = "";
           }
@@ -234,7 +234,7 @@ function getGeoJSONProps() {
           //Alias
           if (geoJSONDataList.values[i - 1].properties.Alias_Name != "NA") {
             document.getElementById("alias").innerHTML =
-              geoJSONDataList.values[i - 1].properties.Alias_Name;
+              "A.K.A. " + geoJSONDataList.values[i - 1].properties.Alias_Name;
           } else {
             document.getElementById("alias").innerHTML = "";
           }

@@ -5,6 +5,7 @@ html {
   width: 102%;
   left: -15px;
   overflow: hidden;
+  font-size: 16px;
 }
 
 a {
@@ -47,7 +48,9 @@ a {
   width: 15%;
   height: 40%;
   top: 34%;
-  min-height: 200px;
+  margin-bottom: 3%;
+  min-height: 275px;
+  /* min-height: 200px; */
 }
 
 .datadisplay-inner {
@@ -66,13 +69,16 @@ a {
   min-height: 275px;
 }
 
-.datadisplay-inner div {
-  max-height: 50px;
-}
+/* .datadisplay-inner div {
+  max-height: 25%;
+} */
+
+/* .datadisplay-outer div {
+  max-height: 25%;
+} */
 
 .welcomediv {
-  padding: 10px;
-  font-size: 25px;
+  font-size: 1.5rem;
   top: 25%;
   display: block;
   width: 130px;
@@ -84,30 +90,30 @@ a {
 
 .genres p {
   display: inline-block;
-  font-size: 20px;
+  font-size: 1.25em;
 }
 .artistinfo {
   display: inline-block;
-  font-size: 16px;
+  font-size: 1em;
 }
 
 .artistinfo p {
-  font-size: 16px;
+  font-size: 1em;
 }
 
 .years p {
   display: inline-block;
-  font-size: 14px;
+  font-size: 1em;
 }
 
 .birthlocation p {
   display: inline-block;
-  font-size: 24px;
+  font-size: 1.5em;
 }
 
-.links p {
+.links a {
   display: inline-block;
-  font-size: 10px;
+  font-size: 0.75em;
 }
 
 #centercircle {
@@ -126,8 +132,169 @@ a {
 }
 
 #bandgroup {
-  font-size: 14px;
+  font-size: 1em;
 }
 #artistname {
-  font-size: 20px;
+  font-size: 1.25em;
+}
+
+@media (max-width: 575px) {
+  .datadisplay-inner {
+    min-width: 150px;
+  }
+  .datadisplay-inner div {
+    max-height: 20px;
+  }
+
+  .datadisplay-outer {
+    min-width: 130px;
+  }
+  .genres {
+    font-size: 1px;
+    display: none;
+  }
+  .years {
+    font-size: 1px;
+    display: none;
+  }
+  .artistinfo p {
+    font-size: 12px;
+  }
+  #artistname {
+    display: inline-block;
+    font-size: 12px;
+  }
+
+  #bandgroup {
+    font-size: 12px;
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 12px;
+  }
+  .links a {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 576px) {
+  body::before {
+    content: "SM";
+  }
+  .datadisplay-inner {
+    min-width: 200px;
+    font-size: 14px;
+  }
+  .datadisplay-inner div {
+    max-height: 35px;
+  }
+  .datadisplay-outer {
+    min-width: 180px;
+  }
+
+  .birthlocation p {
+    display: inline-block;
+    font-size: 0.85em;
+  }
+
+  .genres {
+    font-size: 1px;
+    display: none;
+  }
+  .years {
+    font-size: 1px;
+    display: none;
+  }
+  .artistinfo p {
+    font-size: 1em;
+  }
+  #artistname {
+    display: inline-block;
+    font-size: 1.2em;
+  }
+
+  #bandgroup {
+    font-size: 1em;
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 1.25em;
+  }
+  .links a {
+    padding-top: 5px;
+    font-size: 0.85em;
+  }
+}
+
+@media (min-width: 768px) {
+  body::before {
+    content: "MD";
+  }
+  .datadisplay-inner {
+    min-width: 200px;
+    font-size: 14px;
+    min-height: 265px;
+  }
+  .datadisplay-inner div {
+    max-height: 35px;
+  }
+  .datadisplay-outer {
+    min-width: 180px;
+  }
+  .genres {
+    font-size: 0.75em;
+    display: block;
+  }
+  .years {
+    font-size: 1em;
+    display: block;
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 992px) {
+  body::before {
+    content: "LG";
+  }
+  .bikebox {
+    display: block;
+  }
+  .datadisplay-inner {
+    min-width: 200px;
+    font-size: 14px;
+    min-height: 290px;
+  }
+  .datadisplay-inner div {
+    max-height: 35px;
+  }
+  .datadisplay-outer {
+    min-width: 180px;
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 1200px) {
+  body::before {
+    content: "XL";
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 1400px) {
+  body::before {
+    content: "XXL";
+  }
+  .birthlocation p {
+    display: inline-block;
+    font-size: 1.5em;
+  }
 }
