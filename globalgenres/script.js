@@ -22,23 +22,23 @@ let ObjDetected_Lat;
 const cssCircleOverlayX = viewer.container.clientWidth / 2;
 const cssCircleOverlayY = viewer.container.clientHeight / 2;
 const minimumzoomHeight = 2000000;
-const maximumzoomHeight = 10000000;
+const maximumzoomHeight = 4000000;
 let promise1 = [];
 
-//Welcome Heading
-document.getElementById("artistname").innerHTML = "Welcome!";
-document.getElementById("artistname").style.fontSize = "20px";
-
+// window.onerror = stoperror;
 //Disabling timeline and animation widgets
 viewer.animation.container.style.visibility = "hidden";
 viewer.timeline.container.style.visibility = "hidden";
-console.log(this);
 
 viewer.forceResize();
 
 //Centering the HTML circle around the point position
-document.getElementById("overlay").style.left = `${cssCircleOverlayX - 57}px`;
-document.getElementById("overlay").style.top = `${cssCircleOverlayY - 63}px`;
+document.getElementById("centercircle").style.left = `${
+  cssCircleOverlayX - 65
+}px`;
+document.getElementById("centercircle").style.top = `${
+  cssCircleOverlayY - 65
+}px`;
 
 //Setting the minimum and maximum zoom in level
 viewer.scene.screenSpaceCameraController.minimumZoomDistance =
@@ -48,39 +48,34 @@ viewer.scene.screenSpaceCameraController.maximumZoomDistance =
 
 //Loading geoJSON files
 function loadJSONPointsPolys() {
-  promise1 = Cesium.GeoJsonDataSource.load(
-    "https://cdn.jsdelivr.net/gh/newtonsalmonjrdev/CesiumWorldMusicGenres@main/GMGD_NeonPointBuffGeoJSON.json"
-  );
+  const pointsJSON =
+    "https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/main/Sheet1_Layerexport_PointsP_9.geojson";
+  promise1 = Cesium.GeoJsonDataSource.load(pointsJSON);
 
   promise1.then(function (dataSource1) {
-    //Adding Polygon Points
+    //Adding Polygon Points, 10 Miles Diameter
     entities = dataSource1.entities.values;
     geoJSONDataList = dataSource1.entities;
     viewer.dataSources.add(
-      Cesium.GeoJsonDataSource.load(
-        "https://cdn.jsdelivr.net/gh/newtonsalmonjrdev/CesiumWorldMusicGenres@main/GMGD_NeonPointBuffGeoJSON.json",
-        {
-          stroke: Cesium.Color.fromCssColorString("white"),
-          fill: Cesium.Color.fromCssColorString("#00ff82").withAlpha(1),
-          strokeWidth: 3,
-        }
-      )
+      Cesium.GeoJsonDataSource.load(pointsJSON, {
+        stroke: Cesium.Color.fromCssColorString("white"),
+        fill: Cesium.Color.fromCssColorString("#00ff82").withAlpha(1),
+        markerSymbol: "marker.svg",
+        strokeWidth: 3,
+      })
     );
 
-    //Adding Polygons- to be converted into buffer ellipses
-    const promise2 = Cesium.GeoJsonDataSource.load(
-      "https://cdn.jsdelivr.net/gh/newtonsalmonjrdev/CesiumWorldMusicGenres@main/GMGD_PointsBuffers_300.geojson"
-    );
+    //Adding Polygons- to be converted into buffer ellipses, 100 Miles Diameter
+    const polygonJSON =
+      "https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/main/buffer_1009_json.geojson";
+    const promise2 = Cesium.GeoJsonDataSource.load(polygonJSON);
     promise2.then(function (dataSource2) {
       viewer.dataSources.add(
-        Cesium.GeoJsonDataSource.load(
-          "https://cdn.jsdelivr.net/gh/newtonsalmonjrdev/CesiumWorldMusicGenres@main/GMGD_PointsBuffers_300.geojson",
-          {
-            stroke: Cesium.Color.TRANSPARENT,
-            fill: Cesium.Color.TRANSPARENT.withAlpha(0.1),
-            strokeWidth: 3,
-          }
-        )
+        Cesium.GeoJsonDataSource.load(polygonJSON, {
+          stroke: Cesium.Color.TRANSPARENT,
+          fill: Cesium.Color.TRANSPARENT.withAlpha(0.01),
+          strokeWidth: 3,
+        })
       );
     });
   });
@@ -107,35 +102,18 @@ const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
 let handlermove = handler.setInputAction(function (movement) {
   getPosition();
 }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-let objectDetected2 = false;
+
+function stoperror() {
+  return true;
+}
+stoperror();
 
 // This is retrieving the geoJSON info
 function getGeoJSONProps() {
   let handler1 = new Cesium.ScreenSpaceEventHandler(scene.canvas);
   handler1.setInputAction(function () {
-    const idlist = [
-      "-1",
-      "0",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
-    ];
-    const pickedObjects = scene.pick(windowPosition);
+    const idlist = [...Array(72).keys()];
+    pickedObjects = scene.pick(windowPosition);
     if (Cesium.defined(pickedObjects)) {
       for (let i = 0; i < idlist.length; ++i) {
         if (pickedObjects.id.id === i) {
@@ -143,6 +121,12 @@ function getGeoJSONProps() {
           objectDetected = true;
           ObjDetected_Long = geoJSONDataList.values[i - 1].properties.Longitude;
           ObjDetected_Lat = geoJSONDataList.values[i - 1].properties.Latitude;
+          //Removing Welcome div
+          let getWelcomeDiv = document.getElementById("welcomedivID");
+          if (typeof getWelcomeDiv != "undefined" && getWelcomeDiv != null) {
+            document.getElementById("welcomedivID").remove();
+          }
+
           //Pushing data into the DOM
 
           //Artist Name
@@ -165,10 +149,11 @@ function getGeoJSONProps() {
           //Birth Year
           if (geoJSONDataList.values[i - 1].properties.Birth_Year != "NA") {
             document.getElementById("birthyear").innerHTML =
-              geoJSONDataList.values[i - 1].properties.Birth_Year + "";
+              geoJSONDataList.values[i - 1].properties.Birth_Year + "&nbsp —";
           } else {
             document.getElementById("birthyear").innerHTML = "";
           }
+
           //Death Year
           if (geoJSONDataList.values[i - 1].properties.Death_Year != "NA") {
             document.getElementById("deathyear").innerHTML =
@@ -183,7 +168,7 @@ function getGeoJSONProps() {
           ) {
             document.getElementById("birthcountry").innerHTML =
               geoJSONDataList.values[i - 1].properties.Country_of_Birth;
-            document.getElementById("birthcountry").style.color = "cyan";
+            document.getElementById("birthcountry").style.color = "#23E3E8";
           } else {
             document.getElementById("birthcountry").innerHTML = "";
           }
@@ -252,6 +237,13 @@ function getGeoJSONProps() {
               geoJSONDataList.values[i - 1].properties.Alias_Name;
           } else {
             document.getElementById("alias").innerHTML = "";
+          }
+
+          if (geoJSONDataList.values[i - 1].properties.Spotify_Code != "NA") {
+            document.getElementById("spotifyiframe").src =
+              geoJSONDataList.values[i - 1].properties.SpotifySrc;
+          } else {
+            document.getElementById("spotifyiframe").src = "";
           }
         } else {
           continue;

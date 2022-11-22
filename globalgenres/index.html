@@ -15,16 +15,20 @@
 
     <!--MapDisplay-->
     <div id="cesiumContainer" class="fullSize"></div>
+    <div id="loadingOverlay"><h1>Loading...</h1></div>
+    <div id="toolbar"></div>
     <div class="datadisplay-outer"></div>
+
     <div id="datadisplayID" class="datadisplay-inner">
-      <style></style>
+      <div id="welcomedivID" class="welcomediv">Welcome!</div>
       <iframe
+        id="spotifyiframe"
         style="border-radius: 12px"
         src=""
         width="100%"
         height="80"
         frameborder="0"
-        allowfullscreen=""
+        allowfullscreen="false"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
       ></iframe>
@@ -56,7 +60,7 @@
     </div>
 
     <img
-      id="overlay"
+      id="centercircle"
       src="https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/850cb5839e5a5c9154314f13ea37563b9c30ecf9/circle_outline.svg"
     />
 
