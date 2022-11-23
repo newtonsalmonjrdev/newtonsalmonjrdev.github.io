@@ -16,7 +16,6 @@ function setup() {
   cnv.position(0, 0);
   textAlign(CENTER, CENTER);
   audioContext = getAudioContext();
-  touchStarted();
   mic = new p5.AudioIn();
   mic.start(startPitch);
   mic.start();
@@ -158,7 +157,7 @@ function spokePitchTotal() {
     }
   }
   findSpoke();
-  console.log("The tally is" + tableEntryCompleteTally);
+
   function tableEntryCompleteCheck(tally) {
     let tabletype = document.getElementById("spokenum");
     let spokeNumVal = tabletype.value;
@@ -176,7 +175,6 @@ function spokePitchTotal() {
         });
 
       globalTableEntryCheck = true;
-      console.log(" The spoke sum is: " + spokeSum);
 
       return true;
     }
@@ -221,15 +219,12 @@ function widthCalcCheck() {
       widthCalculator() < pitchHeight - widthBounds
     ) {
       let pitchWidth = pitchHeight + 50;
-      console.log("if" + pitchWidth);
       document.getElementById("classborderid").style.width = pitchWidth;
       return pitchWidth;
     } else if (isNaN(widthCalculator())) {
     } else {
       let pitchWidth = widthCalculator();
-
-      console.log("else:" + pitchWidth);
-      document.getElementById("classborderid").style.width = pitchHeight;
+      document.getElementById("classborderid").style.width = pitchWidth;
       return "width=height";
     }
   }
@@ -239,7 +234,7 @@ function widthCalcCheck() {
 function spokeExceed() {
   const tabletype = document.getElementById("spokenum");
   const spokeNumVal = tabletype.value;
-  const percentAv = 0.015;
+  const percentAv = 0.01;
   let percentAvUpperCheck = getTargetPitchVar + getTargetPitchVar * percentAv;
   let percentAvLowerCheck = getTargetPitchVar - getTargetPitchVar * percentAv;
 
@@ -258,6 +253,8 @@ function spokeExceed() {
         document.querySelector(".largeradial").style.top = "22.25%";
       } else {
         document.getElementById(`table24S${h + 1}`).style.color = "blue";
+        document.getElementById(`table24S${h + 1}`).style.textDecoration =
+          "none";
       }
     }
   }
@@ -268,6 +265,7 @@ function draw() {
 
   // Background Fill Color
   let vol = mic.getLevel();
+
   background(200);
 
   // Target Pitch Rectangle
@@ -280,18 +278,25 @@ function draw() {
   let h = map(pitchVar, 0, 500, width / 2 - getTargetPitchVar, width);
   rect(h, width / 2, 5, 250);
 
-  // Wheel Conditions
+  // Small Wheel Conditions
   let setVolume = document.getElementById("setvolume").valueAsNumber;
-  let element = document.getElementById("smallradialid");
+  let smallWheelEle = document.getElementById("smallradialid");
+
   function volumeWheelCheck() {
     const setvolumeAdjust = 0.1;
-    if (frameCount % 45 === 0 && vol <= setVolume) {
-      element.classList.add("radStart");
-      element.classList.remove("radEnd");
-    } else if (frameCount % 45 === 0 && vol > setVolume) {
-      element.classList.remove("radStart");
-      element.classList.add("radEnd");
+    if (frameCount % 45 === 0 && vol < setVolume) {
+      smallWheelEle.classList.add("radStart");
+      smallWheelEle.classList.remove("radEnd");
+    } else {
+      smallWheelEle.classList.remove("radStart");
+      smallWheelEle.classList.add("radEnd");
     }
+    // } else if (frameCount % 45 === 0 && vol > setVolume) {
+    //   smallWheelEle.classList.remove("radStart");
+    //   smallWheelEle.classList.add("radEnd");
+    //   console.log("This is the setVolume: " + `${setVolume}`);
+    //   console.log("Still Working" + `${vol}`);
+    // }
   }
   volumeWheelCheck();
   textSize(16);
