@@ -1,7 +1,7 @@
 :root {
   --primary-box-color: #8ba2f3;
   --primary-box-text: #fff;
-  --primary-box-lighter: #357b70;
+  --primary-box-lighter: #abccc7;
   --primary-box-darker: #357b70;
   --secondary-box-color: #4f9d92;
   --secondary-box-text: #000;
@@ -14,6 +14,7 @@ body {
   margin-top: 2%;
   margin-bottom: 8.5%;
   background-color: var(--primary-box-lighter);
+  overflow-x: hidden;
 }
 
 canvas {
@@ -23,6 +24,12 @@ canvas {
 p {
   padding-left: 10px;
 }
+
+.form-control label {
+  width: 170px;
+  padding-right: 10px;
+}
+
 .outsidebox {
   position: relative;
   display: none;
@@ -30,7 +37,6 @@ p {
   margin-bottom: 500px;
 }
 .bikebox {
-  border: 1px solid #9c27b0;
   height: 500px;
   position: relative;
   width: 100%;
@@ -45,8 +51,8 @@ p {
 
 .mobilecanvastunerdiv {
   position: relative;
-  border: 1px solid #9c27b0;
-  height: 300px;
+  border: 4px solid #dee2e6;
+  height: 310px;
   width: 100%;
   display: none;
 }
@@ -92,6 +98,8 @@ p {
   border-color: black;
   border-radius: 50%;
   background-color: transparent;
+  pointer-events: none;
+  caret-color: var(--primary-box-color);
   animation-name: spin;
   animation-duration: 5000ms;
   animation-iteration-count: infinite;
@@ -150,6 +158,8 @@ p {
   border-style: solid;
   border-color: black;
   border-radius: 50%;
+  pointer-events: none;
+  caret-color: var(--primary-box-color);
   background-color: transparent;
   animation-name: spin;
   animation-duration: 5000ms;
@@ -260,15 +270,15 @@ p {
   visibility: hidden;
 }
 /*Adjusting radial positions*/
-body::before {
-  content: "XS";
-  color: red;
-  font-size: 2rem;
-  font-weight: bold;
-  position: fixed;
-  top: 0;
-  right: 0;
-}
+// body::before {
+//   content: "XS";
+//   color: red;
+//   font-size: 2rem;
+//   font-weight: bold;
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+// }
 
 @media (max-width: 575px) {
   .bikebox {
@@ -300,16 +310,16 @@ body::before {
     display: block;
   }
   #sketch-holder {
-    top: 570px;
+    top: 575px;
     position: relative;
     left: -1px;
   }
 }
 
 @media (min-width: 576px) {
-  body::before {
-    content: "SM";
-  }
+  // body::before {
+  //   content: "SM";
+  // }
   .bikebox {
     display: none;
   }
@@ -339,16 +349,16 @@ body::before {
     display: block;
   }
   #sketch-holder {
-    top: 485px;
+    top: 583px;
     position: relative;
     left: 10px;
   }
 }
 
 @media (min-width: 768px) {
-  body::before {
-    content: "MD";
-  }
+  // body::before {
+  //   content: "MD";
+  // }
   .bikebox {
     display: block;
   }
@@ -368,7 +378,7 @@ body::before {
     display: block;
   }
   #sketch-holder {
-    top: 430px;
+    top: 497px;
     position: relative;
     left: 76px;
   }
@@ -378,9 +388,9 @@ body::before {
 }
 
 @media (min-width: 992px) {
-  body::before {
-    content: "LG";
-  }
+  // body::before {
+  //   content: "LG";
+  // }
   .bikebox {
     display: block;
   }
@@ -398,7 +408,7 @@ body::before {
   }
   #sketch-holder {
     position: relative;
-    top: 430px;
+    top: 498px;
     left: 163px;
   }
   .outsidebox {
@@ -407,9 +417,9 @@ body::before {
 }
 
 @media (min-width: 1200px) {
-  body::before {
-    content: "XL";
-  }
+  // body::before {
+  //   content: "XL";
+  // }
   .bikebox {
     display: block;
   }
@@ -427,7 +437,7 @@ body::before {
   }
   #sketch-holder {
     position: relative;
-    top: 5px;
+    top: 142px;
     left: 407px;
   }
   .mobilecanvastunerdiv {
@@ -439,15 +449,15 @@ body::before {
 }
 
 @media (min-width: 1400px) {
-  body::before {
-    content: "XXL";
-  }
+  // body::before {
+  //   content: "XXL";
+  // }
   .bikebox {
     display: block;
   }
   #sketch-holder {
     position: relative;
-    top: 20px;
+    top: 142px;
     left: 527px;
   }
   .largeradial {
@@ -460,7 +470,7 @@ body::before {
   }
   .smallradial {
     top: 66.5%;
-    left: 25.15%;
+    left: 25.32%;
   }
   .outsidebox {
     display: none;
