@@ -13,12 +13,6 @@
           name="viewport"
           content="initial-scale=1,maximum-scale=1,user-scalable=no"
         />
-        <!--
-     ArcGIS API for JavaScript, https://js.arcgis.com
-     For more information about the layers-geojson sample,
-     read the original sample description at developers.arcgis.com.
-     https://developers.arcgis.com/javascript/latest/sample-code/layers-geojson/
-     -->
 
         <style>
           html,
@@ -47,7 +41,6 @@
             "esri/Basemap",
             "esri/layers/TileLayer",
             "esri/layers/MapImageLayer",
-            "esri/geometry/Extent",
             "esri/widgets/Legend",
           ], (
             Map,
@@ -58,22 +51,74 @@
             Basemap,
             TileLayer,
             MapImageLayer,
-            Extent,
             Legend
           ) => {
-            const template = {
+            const farmerTemplate = {
               title: "Jamaica Farmers",
               content: [
                 {
                   type: "text", // TextContentElement
-                  text: "<br/>  District: {District} <br/>  Total Farmers: {SUM_Farmers}<br/>",
+                  text: "<br/>  District: {Name} <br/>  Total Farmers: {TotalFarmers}<br/>",
                 },
               ],
             };
 
-            const featureLayer = new FeatureLayer({
+            const parishTemplate = {
+              title: "Parish Name",
+              content: [
+                {
+                  type: "text", // TextContentElement
+                  text: " {NAME_1} ",
+                },
+              ],
+            };
+
+            const farmersPolygon = new FeatureLayer({
               url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Farmers_2016/FeatureServer/0",
-              popupTemplate: template,
+              popupTemplate: farmerTemplate,
+            });
+
+            const parishPolyline = new FeatureLayer({
+              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Parish_Boundaries/FeatureServer",
+            });
+
+            const parishPolygon = new FeatureLayer({
+              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Parish/FeatureServer",
+              popupTemplate: parishTemplate,
+            });
+
+            const worldCitiesRender = {
+              type: "simple",
+              symbol: {
+                type: "simple-marker",
+                color: "gray",
+                size: 8,
+                outline: {
+                  // autocasts as new SimpleLineSymbol()
+                  width: 0.5,
+                  color: "white",
+                },
+              },
+            };
+            const worldCities = new FeatureLayer({
+              url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Cities/FeatureServer/0",
+              labelsVisible: true,
+              labelingInfo: [
+                {
+                  labelExpression: "[CITY_NAME]",
+                  labelPlacement: "above-right",
+                  symbol: {
+                    type: "text", // autocasts as new TextSymbol()
+                    color: [255, 255, 255, 0.7],
+                    haloColor: [0, 0, 0, 0.85],
+                    haloSize: 1,
+                    font: {
+                      size: 8,
+                    },
+                  },
+                },
+              ],
+              renderer: worldCitiesRender,
             });
 
             const tileLayer = new TileLayer({
@@ -93,15 +138,19 @@
 
             const map = new Map({
               basemap: basemap,
-              layers: [tileLayer, featureLayer],
+              layers: [
+                parishPolygon,
+                tileLayer,
+                farmersPolygon,
+                parishPolyline,
+                worldCities,
+              ],
             });
 
             const view = new MapView({
               map: map,
 
               container: "viewDiv",
-              effectiveMaxZoom: 15,
-              effectiveMinZoom: 10,
               extent: {
                 xmin: -8792552.04,
                 ymin: 1920132.57,
@@ -119,6 +168,7 @@
             // });
 
             const legend = new Legend({
+              style: { type: "card", layout: "stack" },
               view: view,
               layerInfos: [
                 {
@@ -126,8 +176,12 @@
                   title: "Solar Potential",
                 },
                 {
-                  layer: featureLayer,
+                  layer: farmersPolygon,
                   title: "Farmers",
+                },
+                {
+                  layer: parishPolyline,
+                  title: "Parish Boundary",
                 },
               ],
             });
@@ -136,7 +190,7 @@
 
             let swipe = new Swipe({
               view: view,
-              leadingLayers: [tileLayer, featureLayer],
+              leadingLayers: [tileLayer, farmersPolygon],
               trailingLayers: [tileLayer],
               direction: "vertical", // swipe widget will move from top to bottom of view
               position: 50, // position set to middle of the view (50%)
