@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Jamaica Agrivoltaic Suitability Map</title>
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta
+          name="viewport"
+          content="initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <!--
+     ArcGIS API for JavaScript, https://js.arcgis.com
+     For more information about the layers-geojson sample,
+     read the original sample description at developers.arcgis.com.
+     https://developers.arcgis.com/javascript/latest/sample-code/layers-geojson/
+     -->
+
+        <style>
+          html,
+          body,
+          #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+          }
+        </style>
+
+        <link
+          rel="stylesheet"
+          href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
+        />
+        <script src="https://js.arcgis.com/4.25/"></script>
+
+        <script>
+          require([
+            "esri/Map",
+
+            "esri/views/MapView",
+            "esri/layers/FeatureLayer",
+            "esri/widgets/Swipe",
+            "esri/Basemap",
+            "esri/layers/TileLayer",
+            "esri/layers/MapImageLayer",
+            "esri/geometry/Extent",
+            "esri/widgets/Legend",
+          ], (
+            Map,
+
+            MapView,
+            FeatureLayer,
+            Swipe,
+            Basemap,
+            TileLayer,
+            MapImageLayer,
+            Extent,
+            Legend
+          ) => {
+            const template = {
+              title: "Jamaica Farmers",
+              content: [
+                {
+                  type: "text", // TextContentElement
+                  text: "<br/>  District: {District} <br/>  Total Farmers: {SUM_Farmers}<br/>",
+                },
+              ],
+            };
+
+            const featureLayer = new FeatureLayer({
+              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Farmers_2016/FeatureServer/0",
+              popupTemplate: template,
+            });
+
+            const tileLayer = new TileLayer({
+              url: "https://tiles.arcgis.com/tiles/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Farmers_and_PV_OUT_Potential_WTL1/MapServer",
+            });
+
+            let basemap = new Basemap({
+              baseLayers: [
+                new MapImageLayer({
+                  url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+                  title: "Basemap",
+                }),
+              ],
+              title: "basemap",
+              id: "basemap",
+            });
+
+            const map = new Map({
+              basemap: basemap,
+              layers: [tileLayer, featureLayer],
+            });
+
+            const view = new MapView({
+              map: map,
+
+              container: "viewDiv",
+              effectiveMaxZoom: 15,
+              effectiveMinZoom: 10,
+              extent: {
+                xmin: -8792552.04,
+                ymin: 1920132.57,
+                xmax: -8435156.09,
+                ymax: 2182709.19,
+                spatialReference: 3857,
+              },
+              ui: {
+                components: ["attribution"],
+              },
+            });
+            //Disabling Zoom functionality
+            // view.on("mouse-wheel", (event) => {
+            //   event.stopPropagation();
+            // });
+
+            const legend = new Legend({
+              view: view,
+              layerInfos: [
+                {
+                  layer: tileLayer,
+                  title: "Solar Potential",
+                },
+                {
+                  layer: featureLayer,
+                  title: "Farmers",
+                },
+              ],
+            });
+
+            view.ui.add(legend, "top-right");
+
+            let swipe = new Swipe({
+              view: view,
+              leadingLayers: [tileLayer, featureLayer],
+              trailingLayers: [tileLayer],
+              direction: "vertical", // swipe widget will move from top to bottom of view
+              position: 50, // position set to middle of the view (50%)
+            });
+            view.ui.add(swipe);
+          });
+        </script>
+      </head>
+
+      <body>
+        <div id="viewDiv"></div>
+      </body>
+    </html>
+  </body>
+</html>
