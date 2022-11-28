@@ -1,0 +1,74 @@
+const billurl ="https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/705bccb2f26924ddfb1e9575817fa56cac72fbca/hibubblesvg_75_1_white.svg";
+const skyboxUrl="https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/main/skybox_darkblue.jpg";
+const minimumzoomHeight = 6000000;
+const maximumzoomHeight = 10000000;
+
+var imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
+  url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+});
+
+var widget = new Cesium.CesiumWidget("cesiumContainer", {
+        // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
+        skyBox: new Cesium.SkyBox({
+          sources: {
+            positiveX:
+              skyboxUrl,
+            negativeX:
+              skyboxUrl,
+            positiveY:
+              skyboxUrl,
+            negativeY:
+              skyboxUrl,
+            positiveZ:
+              skyboxUrl,
+            negativeZ:
+            skyboxUrl,
+          },
+        }),
+      imageryProvider: imageryProvider
+      });
+
+//Billboard
+var dataSourceDisplay = new Cesium.DataSourceDisplay({
+    scene : widget.scene,
+    dataSourceCollection : new Cesium.DataSourceCollection()
+});
+
+
+var entities = dataSourceDisplay.defaultDataSource.entities;
+entities.add({
+    position : Cesium.Cartesian3.fromDegrees(-135.0, 90.0),
+    billboard :{
+        image : billurl
+    }
+});
+
+widget.clock.onTick.addEventListener(function(clock) {
+        var time = clock.currentTime;
+        dataSourceDisplay.update(time);
+});
+      // Show Columbus View map with Web Mercator projection
+  widget.camera.lookAt(
+    Cesium.Cartesian3.fromDegrees(-89.93707575368434,54.9563780995455),
+    new Cesium.Cartesian3(0.0, -1000000.0, minimumzoomHeight)
+  );
+//widget.scene.screenSpaceCameraController.minimumZoomDistance =
+ // minimumzoomHeight;
+widget.scene.screenSpaceCameraController.maximumZoomDistance =
+  maximumzoomHeight;
+  widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+      var previousTime = Date.now();
+      var spinRate = 0.05;
+
+      function applyGlobeSpin() {
+        var currentTime = Date.now();
+        var delta = (currentTime - previousTime) / 1000;
+        previousTime = currentTime;
+        widget.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, spinRate * delta);
+      }
+
+      function startSpinGlobe() {
+        previousTime = Date.now();
+        widget.clock.onTick.addEventListener(applyGlobeSpin);
+      }
+      startSpinGlobe();
