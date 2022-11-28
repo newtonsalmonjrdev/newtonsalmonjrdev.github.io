@@ -4,7 +4,7 @@ const minimumzoomHeight = 6000000;
 const maximumzoomHeight = 10000000;
 
 var imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
-  url: "https://tiles.arcgis.com/tiles/IEuSomXfi6iB7a25/arcgis/rest/services/World_Globe_1812/MapServer",
+  url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
 });
 
 var widget = new Cesium.CesiumWidget("cesiumContainer", {
@@ -49,7 +49,7 @@ widget.clock.onTick.addEventListener(function(clock) {
 });
       // Show Columbus View map with Web Mercator projection
   widget.camera.lookAt(
-    Cesium.Cartesian3.fromDegrees(-89.93707575368434,44.9563780995455),
+    Cesium.Cartesian3.fromDegrees(-89.93707575368434,54.9563780995455),
     new Cesium.Cartesian3(0.0, -1000000.0, minimumzoomHeight)
   );
 //widget.scene.screenSpaceCameraController.minimumZoomDistance =

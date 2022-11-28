@@ -534,10 +534,10 @@ html {
 .globetext {
   width: 300px;
   margin-top: -628px;
-  border: 2px solid;
   padding: 20px;
   position: absolute;
   align-items: center;
+  display: inline-block;
   padding: 0.375rem 0.75rem;
   font-size: 2rem;
   font-weight: 400;
@@ -546,7 +546,7 @@ html {
   text-align: center;
   white-space: nowrap;
   /* background-color: #1b3164; */
-  border: 1px solid #c1cff0;
+  /* border: 1px solid #c1cff0; */
   border-radius: 0.25rem;
 }
 
