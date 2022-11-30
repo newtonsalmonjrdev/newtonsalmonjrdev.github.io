@@ -220,6 +220,10 @@ body {
   .links a {
     font-size: 12px;
   }
+  #ggdescription {
+    font-size: 0.48rem;
+    color: black;
+  }
 }
 
 @media (min-width: 576px) {
@@ -275,6 +279,10 @@ body {
     padding-top: 5px;
     font-size: 0.85em;
   }
+  #ggdescription {
+    font-size: 0.7rem;
+    color: black;
+  }
 }
 
 @media (min-width: 768px) {
@@ -309,6 +317,11 @@ body {
     font-size: 0.95rem;
     width: 195px;
   }
+  #ggdescription {
+    font-size: 0.7rem;
+    width: 190px;
+    color: black;
+  }
 }
 
 @media (min-width: 992px) {
@@ -338,6 +351,11 @@ body {
     font-size: 1.03rem;
     width: 195px;
   }
+  #ggdescription {
+    font-size: 0.7rem;
+
+    color: black;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -352,6 +370,11 @@ body {
   .welcomediv p {
     font-size: 1.1rem;
     width: 195px;
+  }
+  #ggdescription {
+    font-size: 0.7rem;
+    width: 245px;
+    color: black;
   }
 }
 
@@ -368,5 +391,10 @@ body {
   .welcomediv p {
     font-size: 1.17rem;
     width: 280px;
+  }
+  #ggdescription {
+    font-size: 0.7rem;
+    width: 250px;
+    color: black;
   }
 }
