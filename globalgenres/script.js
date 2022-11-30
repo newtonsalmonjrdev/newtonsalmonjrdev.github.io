@@ -1,3 +1,4 @@
+// document.getElementById("spotifyiframe").contentWindow.location.reload(true);
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjZTA0MTg3NS05MDI3LTRkODgtOWY4MC0wN2FhZmI5MmIwNDciLCJpZCI6MTA1OTM2LCJpYXQiOjE2NjczMzc5NjV9.XYrEYpTnMof8gTJYhXaQmIu3Pj2CAcnvE2fB0DxYcVU";
 
@@ -32,6 +33,7 @@ const maximumzoomHeight = 4000000;
 let promise1 = [];
 
 window.onerror = stoperror;
+
 //Disabling timeline and animation widgets
 viewer.animation.container.style.visibility = "hidden";
 viewer.timeline.container.style.visibility = "hidden";
@@ -352,4 +354,5 @@ viewer.camera.flyTo({
   duration: 10,
   heading: 0,
 });
+
 console.log("© Copyright 2022");

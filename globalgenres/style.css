@@ -173,7 +173,7 @@ body {
 @media (max-width: 575px) {
   .datadisplay-inner {
     min-width: 150px;
-    max-height: 75px;
+    max-height: 55px;
     bottom: 1%;
   }
   .datadisplay-inner div {
@@ -362,10 +362,11 @@ body {
   }
   .welcomediv h1 {
     font-size: 1.25rem;
+    width: 260px;
   }
 
   .welcomediv p {
-    font-size: 1.3rem;
-    width: 195px;
+    font-size: 1.17rem;
+    width: 280px;
   }
 }
