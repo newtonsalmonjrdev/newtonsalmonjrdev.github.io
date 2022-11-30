@@ -2,7 +2,7 @@ html {
   position: relative;
   top: -15px;
   height: 102%;
-  width: 102%;
+  width: 104%;
   left: -15px;
   overflow: hidden;
   font-size: 16px;
@@ -11,6 +11,10 @@ html {
 a {
   color: rgb(30, 30, 63);
   text-decoration-style: wavy;
+}
+
+body {
+  background: #fff top left repeat-x;
 }
 
 .fullSize {
@@ -39,6 +43,22 @@ a {
   visibility: hide !important;
 }
 
+.page {
+  display: none;
+}
+
+#loading {
+  display: flex;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  background-image: url("giphy.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .datadisplay-outer {
   position: absolute;
   padding: 5%;
@@ -47,15 +67,14 @@ a {
   left: 1.75%;
   width: 15%;
   height: 40%;
-  top: 34%;
+  bottom: 1%;
   margin-bottom: 3%;
   min-height: 275px;
-  /* min-height: 200px; */
 }
 
 .datadisplay-inner {
   position: absolute;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: Trebuchet MS, sans-serif;
   background-color: lightgray;
   padding: 1%;
   border: 5px black;
@@ -64,9 +83,10 @@ a {
   left: 3%;
   width: 20%;
   height: 45%;
-  top: 37.5%;
+  bottom: 7%;
   margin-bottom: 3%;
   min-height: 275px;
+  display: none;
 }
 
 /* .datadisplay-inner div {
@@ -78,14 +98,26 @@ a {
 } */
 
 .welcomediv {
-  font-size: 1.5rem;
   top: 25%;
   display: block;
-  width: 130px;
+  width: 265px;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
   justify-content: center;
+}
+
+.welcomediv h1 {
+  font-size: 1.25rem;
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+}
+
+.welcomediv p {
+  color: blue;
+  font-style: italic;
+  font-size: 1.2rem;
+  text-decoration: none;
 }
 
 .genres p {
@@ -141,13 +173,17 @@ a {
 @media (max-width: 575px) {
   .datadisplay-inner {
     min-width: 150px;
+    max-height: 75px;
+    bottom: 1%;
   }
   .datadisplay-inner div {
     max-height: 20px;
   }
 
   .datadisplay-outer {
+    display: none;
     min-width: 130px;
+    bottom: 1%;
   }
   .genres {
     font-size: 1px;
@@ -160,6 +196,15 @@ a {
   .artistinfo p {
     font-size: 12px;
   }
+  .welcomediv h1 {
+    font-size: 0.65rem;
+  }
+
+  .welcomediv p {
+    font-size: 0.6rem;
+    width: 150px;
+  }
+
   #artistname {
     display: inline-block;
     font-size: 12px;
@@ -178,17 +223,16 @@ a {
 }
 
 @media (min-width: 576px) {
-  body::before {
-    content: "SM";
-  }
   .datadisplay-inner {
     min-width: 200px;
+    max-height: 75px;
     font-size: 14px;
   }
   .datadisplay-inner div {
     max-height: 35px;
   }
   .datadisplay-outer {
+    display: none;
     min-width: 180px;
   }
 
@@ -196,7 +240,14 @@ a {
     display: inline-block;
     font-size: 0.85em;
   }
+  .welcomediv h1 {
+    font-size: 0.85rem;
+  }
 
+  .welcomediv p {
+    font-size: 0.75rem;
+    width: 195px;
+  }
   .genres {
     font-size: 1px;
     display: none;
@@ -227,9 +278,6 @@ a {
 }
 
 @media (min-width: 768px) {
-  body::before {
-    content: "MD";
-  }
   .datadisplay-inner {
     min-width: 200px;
     font-size: 14px;
@@ -253,12 +301,17 @@ a {
     display: inline-block;
     font-size: 1.5em;
   }
+  .welcomediv h1 {
+    font-size: 1rem;
+  }
+
+  .welcomediv p {
+    font-size: 0.95rem;
+    width: 195px;
+  }
 }
 
 @media (min-width: 992px) {
-  body::before {
-    content: "LG";
-  }
   .bikebox {
     display: block;
   }
@@ -277,24 +330,42 @@ a {
     display: inline-block;
     font-size: 1.5em;
   }
+  .welcomediv h1 {
+    font-size: 1.05rem;
+  }
+
+  .welcomediv p {
+    font-size: 1.03rem;
+    width: 195px;
+  }
 }
 
 @media (min-width: 1200px) {
-  body::before {
-    content: "XL";
-  }
   .birthlocation p {
     display: inline-block;
     font-size: 1.5em;
+  }
+  .welcomediv h1 {
+    font-size: 1.1rem;
+  }
+
+  .welcomediv p {
+    font-size: 1.1rem;
+    width: 195px;
   }
 }
 
 @media (min-width: 1400px) {
-  body::before {
-    content: "XXL";
-  }
   .birthlocation p {
     display: inline-block;
     font-size: 1.5em;
+  }
+  .welcomediv h1 {
+    font-size: 1.25rem;
+  }
+
+  .welcomediv p {
+    font-size: 1.3rem;
+    width: 195px;
   }
 }

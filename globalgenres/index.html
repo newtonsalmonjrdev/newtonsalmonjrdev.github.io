@@ -9,18 +9,24 @@
       href="https://cesium.com/downloads/cesiumjs/releases/1.99/Build/Cesium/Widgets/widgets.css"
       rel="stylesheet"
     />
+    <title>Global Genres</title>
   </head>
   <body>
-    <!--Spotify Setup-->
+    <div class="page"></div>
+    <div id="loading"></div>
 
     <!--MapDisplay-->
     <div id="cesiumContainer" class="fullSize"></div>
     <div id="loadingOverlay"><h1>Loading...</h1></div>
     <div id="toolbar"></div>
     <div class="datadisplay-outer"></div>
-
     <div id="datadisplayID" class="datadisplay-inner">
-      <div id="welcomedivID" class="welcomediv">Welcome!</div>
+      <div id="welcomedivID" class="welcomediv">
+        <h1>Welcome to Global Genres!</h1>
+        <p id="quote"></p>
+        <br />
+        <p id="quoteauthor">~ Bob Marley</p>
+      </div>
       <iframe
         id="spotifyiframe"
         style="border-radius: 12px"

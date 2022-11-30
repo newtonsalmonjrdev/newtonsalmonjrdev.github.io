@@ -3,9 +3,15 @@ Cesium.Ion.defaultAccessToken =
 
 const { BoundingSphere, BoundingSphereState, Cartesian3, Color, Viewer } =
   window.Cesium;
+//Imagery Provider
+const imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
+  url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+});
+
 const viewer = new Cesium.Viewer("cesiumContainer", {
   selectionIndicator: false,
   infoBox: false,
+  imageryProvider: imageryProvider,
 });
 
 const scene = viewer.scene;
@@ -25,7 +31,7 @@ const minimumzoomHeight = 2000000;
 const maximumzoomHeight = 4000000;
 let promise1 = [];
 
-// window.onerror = stoperror;
+window.onerror = stoperror;
 //Disabling timeline and animation widgets
 viewer.animation.container.style.visibility = "hidden";
 viewer.timeline.container.style.visibility = "hidden";
@@ -46,6 +52,54 @@ viewer.scene.screenSpaceCameraController.minimumZoomDistance =
 viewer.scene.screenSpaceCameraController.maximumZoomDistance =
   maximumzoomHeight;
 
+//Loading Screen
+const wait = (delay = 0) =>
+  new Promise((resolve) => setTimeout(resolve, delay));
+
+const setVisible = (elementOrSelector, visible) =>
+  ((typeof elementOrSelector === "string"
+    ? document.querySelector(elementOrSelector)
+    : elementOrSelector
+  ).style.display = visible ? "block" : "none");
+
+setVisible(".page", false);
+setVisible("#loading", true);
+
+document.addEventListener("DOMContentLoaded", () =>
+  wait(2000).then(() => {
+    setVisible(".page", true);
+    setVisible("#loading", false);
+    setVisible(".datadisplay-inner", true);
+    console.log("workiong?");
+  })
+);
+
+//Read quote lines
+const url =
+  "https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWorldMusicGenres/main/musicQuotes.json";
+function getFromAPI(url, callback) {
+  let obj;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => (obj = data))
+    .then(() => callback(obj));
+}
+getFromAPI(url, generateQuotes);
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+async function generateQuotes(quotesObj) {
+  const quoteNum = randomNumber(0, 42);
+  const quoteDOM = quotesObj[quoteNum].quotes;
+  const quoteDOMName = quotesObj[quoteNum].quoteName;
+  document.getElementById("quote").innerHTML = quoteDOM;
+  document.getElementById("quoteauthor").innerHTML = "~ " + quoteDOMName;
+  document.getElementById("quoteauthor").style.color = "darkblue";
+}
+generateQuotes();
+
 //Loading geoJSON files
 function loadJSONPointsPolys() {
   const pointsJSON =
@@ -60,7 +114,6 @@ function loadJSONPointsPolys() {
       Cesium.GeoJsonDataSource.load(pointsJSON, {
         stroke: Cesium.Color.fromCssColorString("white"),
         fill: Cesium.Color.fromCssColorString("#00ff82").withAlpha(1),
-        markerSymbol: "marker.svg",
         strokeWidth: 3,
       })
     );
@@ -88,9 +141,9 @@ function getPosition() {
     viewer.container.clientHeight / 2
   );
 
-  var pickRay = viewer.scene.camera.getPickRay(windowPosition);
-  var pickPosition = viewer.scene.globe.pick(pickRay, viewer.scene);
-  var pickPositionCartographic =
+  let pickRay = viewer.scene.camera.getPickRay(windowPosition);
+  let pickPosition = viewer.scene.globe.pick(pickRay, viewer.scene);
+  let pickPositionCartographic =
     viewer.scene.globe.ellipsoid.cartesianToCartographic(pickPosition);
 
   longitude = pickPositionCartographic.longitude * (180 / Math.PI);
@@ -122,7 +175,7 @@ function getGeoJSONProps() {
           ObjDetected_Long = geoJSONDataList.values[i - 1].properties.Longitude;
           ObjDetected_Lat = geoJSONDataList.values[i - 1].properties.Latitude;
           //Removing Welcome div
-          let getWelcomeDiv = document.getElementById("welcomedivID");
+          const getWelcomeDiv = document.getElementById("welcomedivID");
           if (typeof getWelcomeDiv != "undefined" && getWelcomeDiv != null) {
             document.getElementById("welcomedivID").remove();
           }
@@ -168,7 +221,7 @@ function getGeoJSONProps() {
           ) {
             document.getElementById("birthcountry").innerHTML =
               geoJSONDataList.values[i - 1].properties.Country_of_Birth;
-            document.getElementById("birthcountry").style.color = "yellow";
+            document.getElementById("birthcountry").style.color = "gold";
           } else {
             document.getElementById("birthcountry").innerHTML = "";
           }
@@ -237,6 +290,7 @@ function getGeoJSONProps() {
               "A.K.A. " + geoJSONDataList.values[i - 1].properties.Alias_Name;
           } else {
             document.getElementById("alias").innerHTML = "";
+            document.getElementById("birthcity").style.color = "purple";
           }
 
           if (geoJSONDataList.values[i - 1].properties.Spotify_Code != "NA") {
@@ -260,14 +314,14 @@ getGeoJSONProps();
 function flyToOnClick() {
   if (objectDetected) {
     // Get the camera height
-    var cameraHeight = viewer.camera._positionCartographic.height;
+    let cameraHeight = viewer.camera._positionCartographic.height;
     // Here position is a Cartesian3 of the camera destination
     const ObjDetectXY = Cesium.Cartesian3.fromDegrees(
       Number(ObjDetected_Long),
       Number(ObjDetected_Lat),
       1000000
     );
-    var cartographicDesination = Cesium.Cartographic.fromCartesian(ObjDetectXY);
+    let cartographicDesination = Cesium.Cartographic.fromCartesian(ObjDetectXY);
 
     // Override its height
     cartographicDesination.height = cameraHeight;
@@ -298,3 +352,4 @@ viewer.camera.flyTo({
   duration: 10,
   heading: 0,
 });
+console.log("© Copyright 2022");
