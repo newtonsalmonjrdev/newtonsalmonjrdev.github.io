@@ -32,7 +32,24 @@
   </head>
   <body id="page-top">
     <!--Globe-->
-    <div class="iframeinlinebox">
+    <script>
+      setTimeout(() => {
+        const iframeglobe = document.getElementById("globecover");
+        iframeglobe.style.visibility = "hidden";
+      }, 3000);
+    </script>
+    <img
+      id="globecover"
+      src="solid-color-image.png"
+      style="
+        position: absolute;
+        top: 0px;
+        left: 275px;
+        visibility: visible;
+        z-index: 100;
+      "
+    />
+    <div class="iframeinlinebox" id="iframeglobediv">
       <div class="wrapper">
         <div class="hidelogo"></div>
         <iframe
