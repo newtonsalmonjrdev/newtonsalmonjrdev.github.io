@@ -25,6 +25,13 @@ p {
   padding-left: 10px;
 }
 
+#setvolume {
+  visibility: hidden;
+}
+
+#volumesliderlabel {
+  visibility: hidden;
+}
 .form-control label {
   width: 170px;
   padding-right: 10px;
