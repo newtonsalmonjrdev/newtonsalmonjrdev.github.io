@@ -35,7 +35,6 @@ function getPitch() {
     if (frequency) {
       pitchArray.push(frequency);
       pitchArray = [frequency, ...pitchArray.slice(0, 5)];
-      console.log(pitchArray);
       select("#result").html(pitchArray[2]);
     } else {
       select("#result").html("No pitch detected");
@@ -256,7 +255,9 @@ function draw() {
   // Draw an rectangle with placement based on pitch
   fill(127);
   stroke(500);
-  let h = map(pitchVar, 0, 500, width / 2 - getTargetPitchVar, width);
+  let h = map(pitchVar, 0, getTargetPitchVar * 2, 1, width);
+  // let h = map(pitchVar, 0, 500, width / 2 - getTargetPitchVar, width);
+  console.log(pitchVar);
   rect(h, width / 2, 5, 250);
 
   // Small Wheel Conditions
