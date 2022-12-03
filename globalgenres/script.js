@@ -67,11 +67,10 @@ setVisible(".page", false);
 setVisible("#loading", true);
 
 document.addEventListener("DOMContentLoaded", () =>
-  wait(2000).then(() => {
+  wait(3000).then(() => {
     setVisible(".page", true);
     setVisible("#loading", false);
     setVisible(".datadisplay-inner", true);
-    console.log("workiong?");
   })
 );
 
