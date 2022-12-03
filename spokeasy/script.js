@@ -1,14 +1,12 @@
+"use strict";
+
 // const { map } = require("lodash-es");
 
 let audioContext;
 let mic;
-
 let pitch;
 let pitchArray = [];
 let pitchVar;
-let volOn = false;
-let model_url =
-  "https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models@main/models/pitch-detection/crepe/";
 
 function setup() {
   let cnv = createCanvas(300, 300);
@@ -22,6 +20,8 @@ function setup() {
 }
 
 function startPitch() {
+  let model_url =
+    "https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models@main/models/pitch-detection/crepe/";
   pitch = ml5.pitchDetection(model_url, audioContext, mic.stream, modelLoaded);
 }
 
@@ -33,27 +33,16 @@ function modelLoaded() {
 function getPitch() {
   pitch.getPitch(function (err, frequency) {
     if (frequency) {
-      select("#result").html(frequency);
       pitchArray.push(frequency);
       pitchArray = [frequency, ...pitchArray.slice(0, 5)];
+      console.log(pitchArray);
+      select("#result").html(pitchArray[2]);
     } else {
       select("#result").html("No pitch detected");
     }
-    median(pitchArray);
-    pitchVar = median(pitchArray);
+    pitchVar = pitchArray[2];
     getPitch();
   });
-}
-
-//Median function to increase accuracy in pitch retrieval
-function median(pitchArray) {
-  const sorted = Array.from(pitchArray).sort((a, b) => a - b);
-  const middle = Math.floor(sorted.length / 2);
-  if (sorted.length % 2 === 0) {
-    return (sorted[middle - 1] + sorted[middle]) / 2;
-  }
-
-  return sorted[middle];
 }
 
 let spokeSum = 0;
@@ -61,14 +50,14 @@ let getTargetPitchVar;
 let spokeSumdoublecheck = false;
 let globalTableEntryCheck = false;
 
-tpitchbut.addEventListener("click", (event) => {
-  getTargetPitch();
-});
-
 function getTargetPitch() {
   getTargetPitchVar = document.getElementById("tpitch").value;
   return getTargetPitchVar;
 }
+
+tpitchbut.addEventListener("click", (event) => {
+  getTargetPitch();
+});
 
 formpush.addEventListener("click", (event) => {
   formtable();
@@ -134,11 +123,6 @@ function spokeEntrytoTable() {
 function spokePitchTotal() {
   let tabletype = document.getElementById("spokenum");
   let spokeNumVal = tabletype.value;
-  let tableElement = document.getElementById(`table${spokeNumVal}`);
-  let entryspokeVal = document.getElementById("entryval").value;
-  let spokeChange = `table${spokeNumVal}` + "S" + entryspokeVal;
-  let findSpokeCheck = false;
-  let spokeSumcheck = false;
   let spokeValArr = [];
   let spokeSum = 0;
   let tableEntryCompleteTally = 0;
@@ -192,10 +176,7 @@ function spokePitchAverage() {
   return pitchAv;
 }
 function widthCalculator() {
-  let tabletype = document.getElementById("spokenum");
-  let spokeNumVal = tabletype.value;
   let pitchHeight = document.getElementById("classborderid").offsetHeight;
-  let pitchWidth;
   //mainAdjuster can only be controlled by me on the backend; for every 5hz difference, width px increases by 5
 
   let genAddVal = 0.001;
@@ -282,23 +263,23 @@ function draw() {
   let setVolume = document.getElementById("setvolume").valueAsNumber;
   let smallWheelEle = document.getElementById("smallradialid");
 
-  function volumeWheelCheck() {
-    const setvolumeAdjust = 0.1;
-    if (frameCount % 45 === 0 && vol < setVolume) {
-      smallWheelEle.classList.add("radStart");
-      smallWheelEle.classList.remove("radEnd");
-    } else {
-      smallWheelEle.classList.remove("radStart");
-      smallWheelEle.classList.add("radEnd");
-    }
-    // } else if (frameCount % 45 === 0 && vol > setVolume) {
-    //   smallWheelEle.classList.remove("radStart");
-    //   smallWheelEle.classList.add("radEnd");
-    //   console.log("This is the setVolume: " + `${setVolume}`);
-    //   console.log("Still Working" + `${vol}`);
-    // }
-  }
-  volumeWheelCheck();
+  // function volumeWheelCheck() {
+  //   const setvolumeAdjust = 0.1;
+  //   if (frameCount % 45 === 0 && vol < setVolume) {
+  //     smallWheelEle.classList.add("radStart");
+  //     smallWheelEle.classList.remove("radEnd");
+  //   } else {
+  //     smallWheelEle.classList.remove("radStart");
+  //     smallWheelEle.classList.add("radEnd");
+  //   }
+  //   // } else if (frameCount % 45 === 0 && vol > setVolume) {
+  //   //   smallWheelEle.classList.remove("radStart");
+  //   //   smallWheelEle.classList.add("radEnd");
+  //   //   console.log("This is the setVolume: " + `${setVolume}`);
+  //   //   console.log("Still Working" + `${vol}`);
+  //   // }
+  // }
+  // volumeWheelCheck();
   textSize(16);
   fill(0);
   text("Too Low", 35, 290);
