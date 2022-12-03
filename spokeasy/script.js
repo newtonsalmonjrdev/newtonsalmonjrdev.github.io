@@ -257,7 +257,6 @@ function draw() {
   stroke(500);
   let h = map(pitchVar, 0, getTargetPitchVar * 2, 1, width);
   // let h = map(pitchVar, 0, 500, width / 2 - getTargetPitchVar, width);
-  console.log(pitchVar);
   rect(h, width / 2, 5, 250);
 
   // Small Wheel Conditions
