@@ -74,16 +74,16 @@
             };
 
             const farmersPolygon = new FeatureLayer({
-              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Farmers_2016/FeatureServer/0",
+              url: "https://services6.arcgis.com/pgZRNa6jkUnuWTVZ/arcgis/rest/services/Jamaica_Agrivoltaic_Map_WFL1/FeatureServer/1",
               popupTemplate: farmerTemplate,
             });
 
             const parishPolyline = new FeatureLayer({
-              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Parish_Boundaries/FeatureServer",
+              url: "https://services6.arcgis.com/pgZRNa6jkUnuWTVZ/arcgis/rest/services/Jamaica_Agrivoltaic_Map_WFL1/FeatureServer/14",
             });
 
             const parishPolygon = new FeatureLayer({
-              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Parish/FeatureServer",
+              url: "https://services6.arcgis.com/pgZRNa6jkUnuWTVZ/arcgis/rest/services/Jamaica_Agrivoltaic_Map_WFL1/FeatureServer/0",
               popupTemplate: parishTemplate,
             });
 
@@ -122,7 +122,7 @@
             });
 
             const tileLayer = new TileLayer({
-              url: "https://tiles.arcgis.com/tiles/2mSri961trmsAdvu/arcgis/rest/services/Jamaica_Potential_PVOUT/MapServer",
+              url: "https://tiles.arcgis.com/tiles/pgZRNa6jkUnuWTVZ/arcgis/rest/services/Jamaica_Agrivoltaic_Map_WTL1/MapServer",
             });
 
             let basemap = new Basemap({
