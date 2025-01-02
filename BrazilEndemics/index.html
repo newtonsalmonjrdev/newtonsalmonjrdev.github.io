@@ -111,10 +111,15 @@
                 expression: "$feature.name",
               },
             };
+
             const featureLayer = new FeatureLayer({
-              url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Brazil_Biomes_FeatureLayer/FeatureServer",
+              url: "https://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/4",
               labelingInfo: [labelClass],
             });
+            // const featureLayer = new FeatureLayer({
+            //   url: "https://services3.arcgis.com/2mSri961trmsAdvu/arcgis/rest/services/Brazil_Biomes_FeatureLayer/FeatureServer",
+            //   labelingInfo: [labelClass],
+            // });
 
             const geojsonLayer = new GeoJSONLayer({
               url: url,
