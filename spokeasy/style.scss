@@ -11,6 +11,12 @@
 }
 
 body {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  min-height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove default body margin */
+  background-color: #f8f8f8; /* Optional background color */
   margin-top: 2%;
   margin-bottom: 8.5%;
   background-color: var(--primary-box-lighter);
@@ -19,19 +25,29 @@ body {
 
 canvas {
   border-radius: 12px;
+  display: block;
 }
 
 p {
   padding-left: 10px;
 }
 
-#setvolume {
-  visibility: hidden;
+.pitch-input {
+  width: 50px; /* Small width to fit within confines */
+  padding: 2px; /* Reduce padding for compact size */
+  font-size: 12px; /* Smaller font for inputs */
 }
 
-#volumesliderlabel {
-  visibility: hidden;
+table {
+  width: 100%; /* Make the table responsive */
+  table-layout: fixed; /* Ensure consistent column widths */
 }
+
+td {
+  word-wrap: break-word; /* Handle long content gracefully */
+  text-align: center; /* Center content in cells */
+}
+
 .form-control label {
   width: 170px;
   padding-right: 10px;
@@ -51,11 +67,34 @@ p {
 }
 
 #sketch-holder {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center;
+  left: 0px;
   position: relative;
-  top: 25px;
-  left: 395px;
+  width: 300px; /* Matches the canvas width */
+  height: 300px; /* Matches the canvas height */
+  background-color: #f0f0f0; /* Background color of container */
+  border: 1px solid #ccc; /* Optional border for clarity */
+  border-radius: 10px; /* Matches rectangle rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
 }
 
+// #matchingcanvasDiv {
+//   position: absolute;
+//   // top: 0;
+//   // left: 0;
+//   width: 300px; /* Same as canvas width */
+//   height: 300px; /* Same as canvas height */
+//   background-color: rgba(200, 200, 200, 0.5); /* Semi-transparent overlay */
+//   border-radius: 10px; /* Matches the rounded corners of the rectangle in `rectangle()` */
+// }
+
+#drawingCanvas {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center;
+}
 .mobilecanvastunerdiv {
   position: relative;
   border: 4px solid #dee2e6;
@@ -316,11 +355,11 @@ p {
   .mobilecanvastunerdiv {
     display: block;
   }
-  #sketch-holder {
-    top: 575px;
-    position: relative;
-    left: -1px;
-  }
+  // #sketch-holder {
+  //   top: 575px;
+  //   position: relative;
+  //   left: -1px;
+  // }
 }
 
 @media (min-width: 576px) {
@@ -355,11 +394,11 @@ p {
   .mobilecanvastunerdiv {
     display: block;
   }
-  #sketch-holder {
-    top: 583px;
-    position: relative;
-    left: 10px;
-  }
+  // #sketch-holder {
+  //   top: 583px;
+  //   position: relative;
+  //   left: 10px;
+  // }
 }
 
 @media (min-width: 768px) {
@@ -384,11 +423,11 @@ p {
   .mobilecanvastunerdiv {
     display: block;
   }
-  #sketch-holder {
-    top: 505px;
-    position: relative;
-    left: 76px;
-  }
+  // #sketch-holder {
+  //   top: 497px;
+  //   position: relative;
+  //   left: 76px;
+  // }
   .outsidebox {
     display: none;
   }
@@ -413,11 +452,11 @@ p {
     top: 66.75%;
     left: 15%;
   }
-  #sketch-holder {
-    position: relative;
-    top: 498px;
-    left: 163px;
-  }
+  // #sketch-holder {
+  //   position: relative;
+  //   top: 498px;
+  //   left: 163px;
+  // }
   .outsidebox {
     display: none;
   }
@@ -442,11 +481,11 @@ p {
     top: 66.5%;
     left: 21%;
   }
-  #sketch-holder {
-    position: relative;
-    top: 142px;
-    left: 407px;
-  }
+  // #sketch-holder {
+  //   position: relative;
+  //   top: 142px;
+  //   left: 407px;
+  // }
   .mobilecanvastunerdiv {
     display: none;
   }
@@ -462,11 +501,11 @@ p {
   .bikebox {
     display: block;
   }
-  #sketch-holder {
-    position: relative;
-    top: 142px;
-    left: 527px;
-  }
+  // #sketch-holder {
+  //   position: relative;
+  //   top: 142px;
+  //   left: 527px;
+  // }
   .largeradial {
     top: 23.25%;
     left: 34.5%;
