@@ -10,6 +10,9 @@
   --shadow: 4px 3px 19px 0px rgba(0, 0, 0, 0.3);
 }
 
+.col-half {
+  flex: 0.5 0 0%;
+}
 body {
   display: flex;
   justify-content: center; /* Horizontally center */
