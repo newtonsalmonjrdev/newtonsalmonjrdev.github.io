@@ -72,8 +72,8 @@
               </div>
             </div>
             <div class="col-6 border border-0 p2">
-              <form action="">
-                <label for="pitchspokelabel"> Target Pitch: </label>
+              <form id="targetPitchForm" action="">
+                <label for="pitchspokelabel">Target Pitch: </label>
                 <input
                   id="targetPitch"
                   name="targetPitchSpokeInput"
@@ -86,8 +86,10 @@
                 />
                 <button type="button" id="targetPitchBut">Enter</button>
               </form>
-              <form action="">
-                <label for="pitchspokelabel"> Lower Limit: </label>
+              
+              <!-- Lower Limit Form -->
+              <form id="lowerLimitForm" action="">
+                <label for="pitchspokelabel">Lower Limit: </label>
                 <input
                   id="lowerLimit"
                   name="lowerLimitInput"
@@ -100,9 +102,10 @@
                 />
                 <button type="button" id="lowerLimitBut">Enter</button>
               </form>
-
-              <form action="">
-                <label for="pitchspokelabel"> Upper Limit: </label>
+              
+              <!-- Upper Limit Form -->
+              <form id="upperLimitForm" action="">
+                <label for="pitchspokelabel">Upper Limit: </label>
                 <input
                   id="upperLimit"
                   name="upperLimitInput"
