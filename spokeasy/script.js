@@ -4,9 +4,10 @@
 // Clear Cache by Reloading with No Cache
 
 let audioContext;
-let mic;
+let amplitude,
+  mic,
+  micIsActive = false;
 let pitch;
-let pitchArray = [];
 let pitchVar = 0;
 let pitchArrayTrue = []; // Store recent pitch values
 let maxArraySize = 5;
@@ -16,14 +17,50 @@ let targetLimitVar = "Target";
 
 function setup() {
   let cnv = createCanvas(300, 300);
+  frameRate(5);
   cnv.parent("sketch-holder");
   cnv.position(0, 0);
   textAlign(CENTER, CENTER);
   audioContext = getAudioContext();
-  mic = new p5.AudioIn();
-  mic.start(startPitch);
+  startMic();
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 }
 
+function startMic() {
+  if (!micIsActive) {
+    mic = new p5.AudioIn();
+    mic.start(startPitch);
+    micIsActive = true;
+    amplitude = new p5.Amplitude();
+    amplitude.setInput(mic);
+    console.log("Mic started.");
+  }
+}
+
+function stopMic() {
+  if (micIsActive) {
+    mic.stop();
+    micIsActive = false;
+    console.log("Mic stopped and memory cleared.");
+  }
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState === "hidden") {
+    noLoop();
+    // Stop the mic when tab is hidden
+    stopMic();
+    // Stop the draw loop when the tab is inactive
+    console.log("Tab is inactive. draw() loop stopped.");
+  } else if (document.visibilityState === "visible") {
+    loop();
+    // Start the mic when tab is visible
+    startMic();
+    // Resume the draw loop when the tab is active
+    console.log("Tab is active. draw() loop resumed.");
+  }
+}
 function centerCanvas() {
   const formControlWidth = getComputedStyle(
     document.querySelector(".form-control")
@@ -239,6 +276,29 @@ function generateTable() {
   );
 }
 
+function validateTableInputs() {
+  const inputs = document.querySelectorAll(".pitch-input");
+  let allFilled = true;
+
+  inputs.forEach((input) => {
+    if (input.value.trim() === "") {
+      allFilled = false;
+      input.style.border = "2px solid red"; // Highlight empty inputs
+    } else {
+      input.style.border = ""; // Reset border for filled inputs
+    }
+  });
+
+  if (!allFilled) {
+    alert("Please fill in all the input fields before proceeding.");
+  } else {
+    alert("All inputs are filled. You can proceed!");
+
+    identifyExceedingSpokes();
+    adjustHeightBasedOnAverage();
+  }
+}
+
 function clearTable() {
   // Select all inputs within the table and clear their values
   const inputs = document.querySelectorAll(".pitch-input");
@@ -247,6 +307,23 @@ function clearTable() {
   });
 
   console.log("All table inputs have been cleared.");
+}
+
+function calculateAverage() {
+  const inputs = document.querySelectorAll(".pitch-input");
+  let sum = 0;
+  let count = 0;
+
+  inputs.forEach((input) => {
+    const value = parseFloat(input.value.trim());
+    if (!isNaN(value)) {
+      sum += value;
+      count++;
+    }
+  });
+
+  // Avoid division by zero
+  return count > 0 ? sum / count : 0;
 }
 
 //Upper, Lower and Target Pitch Limits
@@ -315,161 +392,209 @@ function spokePitchtoTable() {
 //   }
 //   findSpoke();
 
-function tableEntryCompleteCheck(tally) {
-  let tabletype = document.getElementById("spokenum");
-  let spokeNumVal = tabletype.value;
-  if (tableEntryCompleteTally != Number(spokeNumVal)) {
-    console.log("Table incomplete");
-    return false;
-  } else {
-    console.log("Table completed!");
-    spokeSum = spokeValArr
-      .map(function (elt) {
-        return /^\d+$/.test(elt) ? parseInt(elt) : 0;
-      })
-      .reduce(function (a, b) {
-        return a + b;
-      });
-
-    globalTableEntryCheck = true;
-
-    return true;
-  }
-}
-
 // //Runs every time "add to table" is pressed
 // tableEntryCompleteCheck(tableEntryCompleteTally);
 // return spokeSum;
 
-function spokePitchAverage() {
-  let tabletype = document.getElementById("spokenum");
-  let spokeNumVal = tabletype.value;
-  let pitchAv = spokePitchTotal() / spokeNumVal;
-  return pitchAv;
-}
-function widthCalculator() {
-  let pitchHeight = document.getElementById("classborderid").offsetHeight;
-  //mainAdjuster can only be controlled by me on the backend; for every 5hz difference, width px increases by 5
+// function widthCalculator() {
+//   const pitchHeight = document.getElementById("classborderid").offsetHeight;
+//   // console.log(calculateAverage());
 
-  let genAddVal = 0.001;
-  let sensitivityMultiplierVal = 1;
-  let pitchAvDiff = getTargetPitchVar - spokePitchAverage();
+//   const genAddVal = 0.001;
+//   const sensitivityMultiplierVal = 1;
+//   const pitchAvDiff = targetLimitVar - calculateAverage();
 
-  let mainAdjuster = 1 / pitchAvDiff + genAddVal;
-  let mainAdjusterWithSensitivity =
-    genAddVal * sensitivityMultiplierVal + mainAdjuster;
-  let pitchAdjust = pitchAvDiff * pitchHeight * mainAdjusterWithSensitivity;
+//   // Combine the calculations for mainAdjuster and sensitivity adjustments
+//   const mainAdjusterWithSensitivity =
+//     genAddVal * (sensitivityMultiplierVal + 1 / pitchAvDiff);
 
-  return pitchAdjust;
-}
+//   // Final pitch adjustment
+//   let pitchAdjust = pitchAvDiff * pitchHeight * mainAdjusterWithSensitivity;
+//   return pitchAdjust;
+// }
 
-function widthCalcCheck() {
-  const pitchHeight = document.getElementById("classborderid").offsetHeight;
-  const widthBounds = 50;
-  if (globalTableEntryCheck) {
-    if (
-      widthCalculator() >= pitchHeight + widthBounds ||
-      widthCalculator() < pitchHeight - widthBounds
-    ) {
-      let pitchWidth = pitchHeight + 50;
-      document.getElementById("classborderid").style.width = pitchWidth;
-      return pitchWidth;
-    } else if (isNaN(widthCalculator())) {
+// function widthCalcCheck() {
+//   const pitchHeight = document.getElementById("classborderid").offsetHeight;
+
+//   const widthBounds = 50;
+//   if (globalTableEntryCheck) {
+//     if (
+//       widthCalculator() >= pitchHeight + widthBounds ||
+//       widthCalculator() < pitchHeight - widthBounds
+//     ) {
+//       let pitchWidth = pitchHeight + 50;
+//       document.getElementById("classborderid").style.width = pitchWidth;
+//       return pitchWidth;
+//     } else if (isNaN(widthCalculator())) {
+//     } else {
+//       let pitchWidth = widthCalculator();
+//       // document.getElementById("classborderid").style.width = pitchWidth;
+//       console.log(pitchHeight);
+//       document.getElementById("classborderid").style.width = 50;
+//       return "width=height";
+//     }
+//   }
+// }
+
+function identifyExceedingSpokes() {
+  const inputs = document.querySelectorAll(".pitch-input");
+  const average = calculateAverage();
+  const exceedingSpokes = [];
+
+  console.log(`Calculated Average: ${average.toFixed(2)}`); // Debugging
+
+  inputs.forEach((input, index) => {
+    const value = parseFloat(input.value.trim()); // Parse the input value
+    console.log(`Spoke ${index + 1} Value: ${value}`); // Debugging
+
+    if (!isNaN(value) && value > average + 20) {
+      exceedingSpokes.push(`Spoke ${index + 1}`);
+      input.style.border = "2px solid red"; // Highlight the exceeding spoke
     } else {
-      let pitchWidth = widthCalculator();
-      document.getElementById("classborderid").style.width = pitchWidth;
-      return "width=height";
+      input.style.border = ""; // Reset the border if within the threshold
     }
+  });
+
+  if (exceedingSpokes.length === 0) {
+    alert("No spokes exceed the average by 20.");
+  } else {
+    alert(
+      `The following spokes exceed the average by 20: ${exceedingSpokes.join(
+        ", "
+      )}`
+    );
+  }
+
+  console.log(
+    `Exceeding spokes: ${exceedingSpokes.length > 0 ? exceedingSpokes : "None"}`
+  );
+}
+
+function adjustHeightBasedOnAverage() {
+  const average = calculateAverage();
+  const adjustmentLevels = [5, 10, 15, 20]; // Thresholds
+  const heights = [330, 335, 340, 345, 350]; // Corresponding heights
+
+  // Select all inputs and find if any exceeds the average
+  const inputs = document.querySelectorAll(".pitch-input");
+  let maxExceedance = 0;
+
+  inputs.forEach((input) => {
+    const value = parseFloat(input.value.trim()); // Parse input value
+    if (!isNaN(value) && value > average) {
+      const exceedance = value - average;
+      maxExceedance = Math.max(maxExceedance, exceedance);
+    }
+  });
+
+  // Determine the new height based on maxExceedance
+  let newHeight = 330; // Default height if no exceedance
+  for (let i = 0; i < adjustmentLevels.length; i++) {
+    if (maxExceedance > adjustmentLevels[i]) {
+      newHeight = heights[i + 1];
+    }
+  }
+
+  // Update the element's height
+  const classBorderElement = document.getElementById("classborderid");
+  if (classBorderElement) {
+    classBorderElement.style.height = `${newHeight}px`;
+    console.log(`Updated height to: ${newHeight}px`);
+  } else {
+    console.error("Element with ID 'classborderid' not found.");
   }
 }
 
 //Evauates which specific spokes exceed the average
-function spokeExceed() {
-  const tabletype = document.getElementById("spokenum");
-  const spokeNumVal = tabletype.value;
-  const percentAv = 0.01;
-  let percentAvUpperCheck = getTargetPitchVar + getTargetPitchVar * percentAv;
-  let percentAvLowerCheck = getTargetPitchVar - getTargetPitchVar * percentAv;
+// function spokeExceed() {
+//   const tabletype = document.getElementById("spokenum");
+//   const spokeNumVal = tabletype.value;
+//   const percentAv = 0.01;
+//   let percentAvUpperCheck = getTargetPitchVar + getTargetPitchVar * percentAv;
+//   let percentAvLowerCheck = getTargetPitchVar - getTargetPitchVar * percentAv;
 
-  if (globalTableEntryCheck) {
-    for (let h = 0; h < Number(spokeNumVal); h++) {
-      if (
-        document.getElementById(`table24S${h + 1}`).innerHTML >
-          percentAvUpperCheck ||
-        document.getElementById(`table24S${h + 1}`).innerHTML <
-          percentAvLowerCheck
-      ) {
-        document.getElementById(`table24S${h + 1}`).style.color = "red";
-        document.getElementById(`table24S${h + 1}`).style.textDecoration =
-          "underline";
-        document.getElementById("classborderid").style.top = "19.25%";
-        document.querySelector(".largeradial").style.top = "22.25%";
-      } else {
-        document.getElementById(`table24S${h + 1}`).style.color = "blue";
-        document.getElementById(`table24S${h + 1}`).style.textDecoration =
-          "none";
-      }
-    }
-  }
-}
+//   if (globalTableEntryCheck) {
+//     for (let h = 0; h < Number(spokeNumVal); h++) {
+//       if (
+//         document.getElementById(`table24S${h + 1}`).innerHTML >
+//           percentAvUpperCheck ||
+//         document.getElementById(`table24S${h + 1}`).innerHTML <
+//           percentAvLowerCheck
+//       ) {
+//         document.getElementById(`table24S${h + 1}`).style.color = "red";
+//         document.getElementById(`table24S${h + 1}`).style.textDecoration =
+//           "underline";
+//         document.getElementById("classborderid").style.top = "19.25%";
+//         document.querySelector(".largeradial").style.top = "22.25%";
+//       } else {
+//         document.getElementById(`table24S${h + 1}`).style.color = "blue";
+//         document.getElementById(`table24S${h + 1}`).style.textDecoration =
+//           "none";
+//       }
+//     }
+//   }
+// }
 
 function draw() {
   //Setting targetPitch boundaries for map function in h. May want to adjust the canvas size to encompass the entire range of values set below
-
-  // Background Fill Color
-  let vol = mic.getLevel();
-
+  console.log("testing");
   background(200);
+  if (micIsActive) {
+    let level = amplitude.getLevel();
+    let micSensitivity = document.getElementById("setvolume").value;
 
-  // Target Pitch Rectangle
-  fill("green");
-  rect(width / 2, height / 2, 5, 200);
+    // Background Fill Color
 
-  // Draw an rectangle with placement based on pitch
-  fill(127);
-  stroke(500);
-  //   console.log(pitchVar);
+    // Target Pitch Rectangle
+    fill("green");
+    rect(width / 2 - 8, height / 2, 10, 200);
 
-  //   console.log(width);
+    // Draw an rectangle with placement based on pitch
+    fill(127);
+    stroke(500);
 
-  //   let h = map(pitchVar, 0, getTargetPitchVar * 2, 1, width);
-  let h = map(pitchVar, 0, 150, 1, width);
+    // Small Wheel Conditions
+    // let setVolume = document.getElementById("setvolume").valueAsNumber;
+    // let smallWheelEle = document.getElementById("smallradialid");
 
-  // let h = map(pitchVar, 0, 500, width / 2 - getTargetPitchVar, width);
-  rect(h, width / 2, 5, 250);
+    // function volumeWheelCheck() {
+    //   const setvolumeAdjust = 0.1;
+    //   if (frameCount % 45 === 0 && vol < setVolume) {
+    //     smallWheelEle.classList.add("radStart");
+    //     smallWheelEle.classList.remove("radEnd");
+    //   } else {
+    //     smallWheelEle.classList.remove("radStart");
+    //     smallWheelEle.classList.add("radEnd");
+    //   }
+    //   // } else if (frameCount % 45 === 0 && vol > setVolume) {
+    //   //   smallWheelEle.classList.remove("radStart");
+    //   //   smallWheelEle.classList.add("radEnd");
+    //   //   console.log("This is the setVolume: " + `${setVolume}`);
+    //   //   console.log("Still Working" + `${vol}`);
+    //   // }
+    // }
+    // volumeWheelCheck();
 
-  // Small Wheel Conditions
-  let setVolume = document.getElementById("setvolume").valueAsNumber;
-  let smallWheelEle = document.getElementById("smallradialid");
+    textSize(16);
+    fill(0);
+    text(lowerlimitVar, 35, 290);
+    textSize(16);
+    fill(0);
+    text(targetLimitVar, 150, 130);
+    textSize(16);
+    fill(0);
+    text(upperLimitVar, 260, 290);
+    rectangle();
 
-  // function volumeWheelCheck() {
-  //   const setvolumeAdjust = 0.1;
-  //   if (frameCount % 45 === 0 && vol < setVolume) {
-  //     smallWheelEle.classList.add("radStart");
-  //     smallWheelEle.classList.remove("radEnd");
-  //   } else {
-  //     smallWheelEle.classList.remove("radStart");
-  //     smallWheelEle.classList.add("radEnd");
-  //   }
-  //   // } else if (frameCount % 45 === 0 && vol > setVolume) {
-  //   //   smallWheelEle.classList.remove("radStart");
-  //   //   smallWheelEle.classList.add("radEnd");
-  //   //   console.log("This is the setVolume: " + `${setVolume}`);
-  //   //   console.log("Still Working" + `${vol}`);
-  //   // }
-  // }
-  // volumeWheelCheck();
+    if (level > micSensitivity) {
+      let h = map(pitchVar, lowerlimitVar, upperLimitVar, 1, width - 8, true);
 
-  textSize(16);
-  fill(0);
-  text(lowerlimitVar, 35, 290);
-  textSize(16);
-  fill(0);
-  text(targetLimitVar, 150, 130);
-  textSize(16);
-  fill(0);
-  text(upperLimitVar, 260, 290);
-  rectangle();
+      fill("grey");
+      rect(h, width / 2, 5, 250);
+    }
+  } else {
+    console.log("wait");
+  }
 }
 
 function rectangle() {
