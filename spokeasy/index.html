@@ -183,19 +183,35 @@
               <div id="matchingDiv"></div>
               <canvas id="drawingCanvas" width="300" height="300"></canvas>
             </div> -->
-            <label class="form-label" id="volumesliderlabel" for="volumeslider"
-              >Adjust Mic Sensitivity:</label
-            >
-            <input
-              class="form-control"
-              type="range"
-              id="setvolume"
-              name="volumeslider"
-              min="0"
-              max="0.05"
-              step="0.0005"
-            />
-          </div>
+            <!-- <label class="form-label" id="volumesliderlabel" for="volumeslider">
+              Adjust Mic Sensitivity:
+            </label> -->
+            <div style="text-align: left; margin-bottom: 10px;">
+              <!-- Centered Label Above Slider -->
+              <label class= "micLabel" id="volumesliderlabel" for="volumeslider">
+                Mic Sensitivity:
+              </label>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom:10px;">
+              <!-- Left Label -->
+              <span >More</span>
+            
+              <!-- Slider -->
+              <input
+                class="form-control"
+                type="range"
+                id="setvolume"
+                name="volumeslider"
+                min="0"
+                max="0.02"
+                step="0.005"
+                style="flex-grow: 1; margin: 0 10px;"
+              />
+            
+              <!-- Right Label -->
+              <span >Less</span>
+            </div>
+            
           <div class="mobilecanvastunerdiv"></div>
           <div class="border border-4 p2">
             <h2 id="spoketabletitle" class="text-center">Spoke Pitch Table</h2>
@@ -210,6 +226,8 @@
               <option value="48">48</option>
             </select>
             <button id="generatetableid">Generate Table</button>
+            <button onclick="validateTableInputs()">Validate Inputs</button>
+
             <button id="cleartableid">Clear Table</button>
 
             <table id="spoketable" class="table">
