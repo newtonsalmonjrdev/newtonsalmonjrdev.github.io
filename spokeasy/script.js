@@ -334,6 +334,23 @@ let upperPitchInputVal = document.getElementById("upperLimit");
 let targetPitchEnter = document.getElementById("targetPitchBut");
 let targetPitchInputVal = document.getElementById("targetPitch");
 
+function attachEnterKey(formId, buttonId) {
+  const form = document.getElementById(formId);
+  const button = document.getElementById(buttonId);
+
+  form.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent the default form submission behavior
+      button.click(); // Trigger the button's click event
+    }
+  });
+}
+
+// Attach listeners for each form
+attachEnterKey("targetPitchForm", "targetPitchBut");
+attachEnterKey("lowerLimitForm", "lowerLimitBut");
+attachEnterKey("upperLimitForm", "upperLimitBut");
+
 lowerPitchEnter.addEventListener("click", (event) => {
   lowerlimitVar = lowerPitchInputVal.value;
 });
