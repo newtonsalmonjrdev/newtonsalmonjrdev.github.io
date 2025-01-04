@@ -31,7 +31,9 @@ canvas {
 p {
   padding-left: 10px;
 }
-
+span {
+  margin-left: 10px;
+}
 .pitch-input {
   width: 50px; /* Small width to fit within confines */
   padding: 2px; /* Reduce padding for compact size */
@@ -52,7 +54,9 @@ td {
   width: 170px;
   padding-right: 10px;
 }
-
+.micLabel {
+  margin-top: 10px;
+}
 .outsidebox {
   position: relative;
   display: none;
@@ -301,7 +305,8 @@ td {
   background-position: center;
   background-repeat: no-repeat;
   animation: spin 1.3s steps(2) 0.2s infinite;
-  -webkit-animation: spin 1.3s linear infinite;
+  // -webkit-animation: spin 1.3s linear infinite;
+  -webkit-animation: spin 10s linear infinite;
 }
 
 #largeradialid {
