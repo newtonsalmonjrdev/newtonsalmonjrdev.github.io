@@ -3,14 +3,13 @@ const skyboxUrl = "https://raw.githubusercontent.com/newtonsalmonjrdev/CesiumWor
 const minimumzoomHeight = 6000000;
 const maximumzoomHeight = 10000000;
 
-// Use Mapbox Satellite as the imagery provider
-var imageryProvider = new Cesium.MapboxStyleImageryProvider({
-  styleId: "satellite-v9", // Mapbox Satellite style
-  accessToken: "pk.eyJ1IjoibmV3dG9uc2FsbW9uanJkZXYiLCJhIjoiY201MjZjaDR1MGt6dTJtb3plYXFnMG1uZiJ9.pwjroA5SaJDFdWFj0zfKdQ", // Replace "key" with your actual Mapbox access token
-});
-
-var widget = new Cesium.CesiumWidget("cesiumContainer", {
-  // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
+// Create the viewer with the ArcGIS Satellite base layer
+const viewer = new Cesium.Viewer("cesiumContainer", {
+  baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+    Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+      Cesium.ArcGisBaseMapType.SATELLITE
+    )
+  ),
   skyBox: new Cesium.SkyBox({
     sources: {
       positiveX: skyboxUrl,
@@ -21,12 +20,11 @@ var widget = new Cesium.CesiumWidget("cesiumContainer", {
       negativeZ: skyboxUrl,
     },
   }),
-  imageryProvider: imageryProvider, // Set the Mapbox Satellite provider
 });
 
 // Billboard
 var dataSourceDisplay = new Cesium.DataSourceDisplay({
-  scene: widget.scene,
+  scene: viewer.scene,
   dataSourceCollection: new Cesium.DataSourceCollection()
 });
 
@@ -38,19 +36,19 @@ entities.add({
   }
 });
 
-widget.clock.onTick.addEventListener(function(clock) {
+viewer.clock.onTick.addEventListener(function(clock) {
   var time = clock.currentTime;
   dataSourceDisplay.update(time);
 });
 
 // Show Columbus View map with Web Mercator projection
-widget.camera.lookAt(
+viewer.camera.lookAt(
   Cesium.Cartesian3.fromDegrees(-89.93707575368434, 54.9563780995455),
   new Cesium.Cartesian3(0.0, -1000000.0, minimumzoomHeight)
 );
 
-widget.scene.screenSpaceCameraController.maximumZoomDistance = maximumzoomHeight;
-widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+viewer.scene.screenSpaceCameraController.maximumZoomDistance = maximumzoomHeight;
+viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 
 var previousTime = Date.now();
 var spinRate = 0.05;
@@ -59,12 +57,12 @@ function applyGlobeSpin() {
   var currentTime = Date.now();
   var delta = (currentTime - previousTime) / 1000;
   previousTime = currentTime;
-  widget.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, spinRate * delta);
+  viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, spinRate * delta);
 }
 
 function startSpinGlobe() {
   previousTime = Date.now();
-  widget.clock.onTick.addEventListener(applyGlobeSpin);
+  viewer.clock.onTick.addEventListener(applyGlobeSpin);
 }
 
 startSpinGlobe();
